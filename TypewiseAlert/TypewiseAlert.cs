@@ -52,7 +52,7 @@ namespace TypewiseAlert
             Debug.Assert(alertSystem.upperLimit != 0);
             Console.WriteLine("TUL " + alertSystem.upperLimit);
 
-            BreachType breachType = alertSystem.CheckForTemperatureBreach(alertSystem.temperature);
+            BreachType breachType = alertSystem.CheckForTemperatureBreach(alertSystem.temperature, alertSystem.lowerLimit, alertSystem.upperLimit);
 
             Debug.Assert(breachType.Equals(BreachType.TOO_HIGH));
 
@@ -86,7 +86,7 @@ namespace TypewiseAlert
         }
 
 
-        public BreachType CheckForTemperatureBreach(double temperatureInC)
+        public BreachType CheckForTemperatureBreach(double temperatureInC, int lowerLimit, int upperLimit)
         {
             if (temperatureInC < lowerLimit)
             {
