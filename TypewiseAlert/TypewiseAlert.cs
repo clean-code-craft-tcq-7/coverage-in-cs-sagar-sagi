@@ -9,6 +9,8 @@ namespace TypewiseAlert
         public int upperLimit = 0;
         public double temperature = 0d;
 
+        public delegate void SetTemperatureRange();
+
         public enum BreachType
         {
             NORMAL,
@@ -38,16 +40,18 @@ namespace TypewiseAlert
         public static void Main()
         {
             TypewiseAlert alertSystem = new TypewiseAlert();
+            SetTemperatureRange setTemperatureRange;
 
             BatteryCharacter batteryType1 = new BatteryCharacter
             {
                 coolingType = CoolingType.PASSIVE_COOLING,
                 brand = "Excide"
             };
+            setTemperatureRange = alertSystem.SetTempRangeForPassiveColling;
 
             alertSystem.temperature = 50d;
 
-            alertSystem.SetTemperatureRange(batteryType1.coolingType);
+            setTemperatureRange();
 
             Debug.Assert(alertSystem.upperLimit != 0);
             Console.WriteLine("TUL " + alertSystem.upperLimit);
@@ -66,23 +70,22 @@ namespace TypewiseAlert
             }
         }
 
-        public void SetTemperatureRange(CoolingType coolingType)
+        public void SetTempRangeForPassiveColling()
         {
-            switch (coolingType)
-            {
-                case CoolingType.PASSIVE_COOLING:
-                    lowerLimit = 0;
-                    upperLimit = 35;
-                    break;
-                case CoolingType.HI_ACTIVE_COOLING:
-                    lowerLimit = 0;
-                    upperLimit = 45;
-                    break;
-                case CoolingType.MED_ACTIVE_COOLING:
-                    lowerLimit = 0;
-                    upperLimit = 40;
-                    break;
-            }
+            lowerLimit = 0;
+            upperLimit = 35;
+        }
+
+        public void SetTempRangeForHighActiveColling()
+        {
+            lowerLimit = 0;
+            upperLimit = 45;
+        }
+
+        public void SetTempRangeForLowActiveColling()
+        {
+            lowerLimit = 0;
+            upperLimit = 40;
         }
 
 
@@ -123,8 +126,6 @@ namespace TypewiseAlert
                     Console.WriteLine("To: {0}\n", recepient);
                     Console.WriteLine("Hi, the temperature is too high\n");
                     mailSent = true;
-                    break;
-                case BreachType.NORMAL:
                     break;
             }
             return mailSent;
