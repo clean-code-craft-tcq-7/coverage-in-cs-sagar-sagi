@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Xunit;
 
 namespace TypewiseAlert.Test
@@ -45,34 +45,33 @@ namespace TypewiseAlert.Test
         [Fact]
         public void ClassifyTempAndInfersBreach_PassiveCooling()
         {
-            Assert.True(TypewiseAlert.classifyTemperatureBreach(TypewiseAlert.CoolingType.PASSIVE_COOLING, 50) ==
+            PassiveCooling passiveCooling = new PassiveCooling();
+            Assert.True(TypewiseAlert.classifyTemperatureBreach(passiveCooling, 50) ==
               TypewiseAlert.BreachType.TOO_HIGH);
         }
 
         [Fact]
         public void ClassifyTempAndInfersBreach_HiActiveCooling()
         {
-            Assert.True(TypewiseAlert.classifyTemperatureBreach(TypewiseAlert.CoolingType.HI_ACTIVE_COOLING, 85) ==
+            HighActiveCooling highActiveCooling = new HighActiveCooling();
+            Assert.True(TypewiseAlert.classifyTemperatureBreach(highActiveCooling, 85) ==
               TypewiseAlert.BreachType.TOO_HIGH);
         }
 
         [Fact]
         public void ClassifyTempAndInfersBreach_MedActiveCooling()
         {
-            Assert.True(TypewiseAlert.classifyTemperatureBreach(TypewiseAlert.CoolingType.MED_ACTIVE_COOLING, 60) ==
+            MedActiveCooling medActiveCooling = new MedActiveCooling();
+            Assert.True(TypewiseAlert.classifyTemperatureBreach(medActiveCooling, 60) ==
               TypewiseAlert.BreachType.TOO_HIGH);
         }
 
         [Fact]
         public void AlertControllerDuringPassiveCooling()
         {
-            TypewiseAlert.BatteryCharacter batteryCharacter = new TypewiseAlert.BatteryCharacter
-            {
-                coolingType = TypewiseAlert.CoolingType.PASSIVE_COOLING,
-                brand = "Excide"
-            };
+            PassiveCooling passiveCooling = new PassiveCooling();
 
-            TypewiseAlert.checkAndAlert(TypewiseAlert.AlertTarget.TO_CONTROLLER, batteryCharacter, 45d, typewiseAlertTest);
+            TypewiseAlert.checkAndAlert(TypewiseAlert.AlertTarget.TO_CONTROLLER, passiveCooling, 45d, typewiseAlertTest);
 
             Assert.True(ControllerAlertCount == 1);  //Assert if ControllerAlert is not invoked
             ControllerAlertCount = 0; //Reset here
@@ -81,13 +80,9 @@ namespace TypewiseAlert.Test
         [Fact]
         public void AlertEmailDuringPassiveCooling()
         {
-            TypewiseAlert.BatteryCharacter batteryCharacter = new TypewiseAlert.BatteryCharacter
-            {
-                coolingType = TypewiseAlert.CoolingType.PASSIVE_COOLING,
-                brand = "Excide"
-            };
+            PassiveCooling passiveCooling = new PassiveCooling();
 
-            TypewiseAlert.checkAndAlert(TypewiseAlert.AlertTarget.TO_EMAIL, batteryCharacter, 45d, typewiseAlertTest);
+            TypewiseAlert.checkAndAlert(TypewiseAlert.AlertTarget.TO_EMAIL, passiveCooling, 45d, typewiseAlertTest);
 
             Assert.True(EmailAlertCount == 1);  //Assert if ControllerAlert is not invoked
             EmailAlertCount = 0; //Reset here
